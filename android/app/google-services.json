@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "798075351606",
+    "project_id": "taxiapp-69c0d",
+    "storage_bucket": "taxiapp-69c0d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:798075351606:android:974068a16571eb74fd9e97",
+        "android_client_info": {
+          "package_name": "com.phongltktv.taxi_flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "798075351606-5r97apeketbg2vignkq13hbn6ripd9p5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDR9UuMetcfUqjj5JxLln4z31obSdKAfuw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "798075351606-5r97apeketbg2vignkq13hbn6ripd9p5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "798075351606-5on1co5455nb4i4r7hhk43f1dmluv5qd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.phongltktv.taxiFlutterApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
