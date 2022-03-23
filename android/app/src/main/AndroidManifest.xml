@@ -4,6 +4,8 @@
         android:label="taxi_flutter_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+    <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyBqRHP-xv2nIiMX78t5PiN3TDLqwBB4iEk"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

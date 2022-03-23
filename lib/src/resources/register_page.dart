@@ -1,6 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:taxi_flutter_app/src/app.dart';
+import 'package:taxi_flutter_app/src/resources/dialog/loading_dialog.dart';
+import 'package:taxi_flutter_app/src/resources/dialog/msg_dialog.dart';
 import 'package:taxi_flutter_app/src/resources/home_page.dart';
 import 'package:taxi_flutter_app/src/resources/login_page.dart';
 import 'package:taxi_flutter_app/src/blocs/auth_bloc.dart';
@@ -13,11 +16,11 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  AuthBloc bloc = new AuthBloc();
   TextEditingController _nameController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _phoneController = new TextEditingController();
+  AuthBloc authBloc = new AuthBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,7 @@ class _RegisterPageState extends State<RegisterPage> {
             Padding(
                 padding: EdgeInsets.fromLTRB(0, 40, 0, 10),
                 child: StreamBuilder(
-                  stream: bloc.nameStream,
+                  stream: authBloc.nameStream,
                   builder: (context, snapshot) => TextField(
                     style: TextStyle(fontSize: 18, color: Colors.black),
                     controller: _nameController,
@@ -72,7 +75,7 @@ class _RegisterPageState extends State<RegisterPage> {
             Padding(
                 padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                 child: StreamBuilder(
-                    stream: bloc.phoneStream,
+                    stream: authBloc.phoneStream,
                     builder: (context, snapshot) => TextField(
                           controller: _phoneController,
                           style: TextStyle(fontSize: 18, color: Colors.black),
@@ -94,7 +97,7 @@ class _RegisterPageState extends State<RegisterPage> {
             Padding(
                 padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                 child: StreamBuilder(
-                  stream: bloc.emailStream,
+                  stream: authBloc.emailStream,
                   builder: (context, snapshot) => TextField(
                     controller: _emailController,
                     style: TextStyle(fontSize: 18, color: Colors.black),
@@ -115,7 +118,7 @@ class _RegisterPageState extends State<RegisterPage> {
             Padding(
                 padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
                 child: StreamBuilder(
-                  stream: bloc.passStream,
+                  stream: authBloc.passStream,
                   builder: (context, snapshot) => TextField(
                     controller: _passwordController,
                     style: TextStyle(fontSize: 18, color: Colors.black),
@@ -179,17 +182,21 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void onSignupClicked() {
-    var isValid = bloc.isValid(_nameController.text, _emailController.text,
+    var isValid = authBloc.isValid(_nameController.text, _emailController.text,
         _passwordController.text, _phoneController.text);
 
     if (isValid) {
       // create user
       // loading dialog
-      print('asdf');
-      bloc.signUp(_emailController.text, _passwordController.text,
+      LoadingDialog.showLoadingDialog(context, "loading");
+      authBloc.signUp(_emailController.text, _passwordController.text,
           _phoneController.text, _nameController.text, () {
+        LoadingDialog.hideLoadingDialog(context);
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => HomePage()));
+      }, (msg) {
+        LoadingDialog.hideLoadingDialog(context);
+        MsgDialog.showMsgDialog(context, "Sign up", msg);
       });
     }
   }

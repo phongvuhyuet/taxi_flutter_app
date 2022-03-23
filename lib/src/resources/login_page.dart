@@ -1,6 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:taxi_flutter_app/src/app.dart';
+import 'package:taxi_flutter_app/src/resources/dialog/loading_dialog.dart';
+import 'package:taxi_flutter_app/src/resources/dialog/msg_dialog.dart';
+import 'package:taxi_flutter_app/src/resources/home_page.dart';
 import 'package:taxi_flutter_app/src/resources/register_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -11,6 +15,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _passController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +44,7 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                   padding: EdgeInsets.fromLTRB(0, 100, 0, 10),
                   child: TextField(
+                    controller: _emailController,
                     style: TextStyle(fontSize: 18, color: Colors.black),
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -51,6 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                         labelText: "Email"),
                   )),
               TextField(
+                controller: _passController,
                 style: TextStyle(fontSize: 18, color: Colors.black),
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -106,5 +114,18 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void onLoginClicked() {}
+  void onLoginClicked() {
+    String email = _emailController.text;
+    String pass = _passController.text;
+    var authBloc = MyApp.of(context)?.authBloc;
+    LoadingDialog.showLoadingDialog(context, "Loading...");
+    authBloc?.signIn(email, pass, () {
+      LoadingDialog.hideLoadingDialog(context);
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => HomePage()));
+    }, (msg) {
+      LoadingDialog.hideLoadingDialog(context);
+      MsgDialog.showMsgDialog(context, "Sign-In", msg);
+    });
+  }
 }
