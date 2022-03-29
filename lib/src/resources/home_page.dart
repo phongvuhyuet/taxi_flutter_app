@@ -5,6 +5,7 @@ import 'package:taxi_flutter_app/src/model/place_item_res.dart';
 import 'package:taxi_flutter_app/src/model/step_res.dart';
 import 'package:taxi_flutter_app/src/model/trip_info_res.dart';
 import 'package:taxi_flutter_app/src/repository/place_service.dart';
+import 'package:taxi_flutter_app/src/resources/widgets/car_pickup.dart';
 import 'package:taxi_flutter_app/src/resources/widgets/home_menu.dart';
 import 'package:taxi_flutter_app/src/resources/widgets/ride_picker.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -21,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   final Set<Marker> _listMarkers = new Set();
   final Set<Polyline> _polyline = new Set();
   Completer<GoogleMapController> _controller = Completer();
+  var _tripDistance = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +74,13 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
+            Positioned(
+              left: 20,
+              right: 20,
+              bottom: 40,
+              height: 248,
+              child: CarPickup(_tripDistance),
+            )
           ],
         ),
       ),
@@ -133,7 +142,7 @@ class _HomePageState extends State<HomePage> {
       LatLngBounds bounds = LatLngBounds(
           northeast: LatLng(nLat, nLng), southwest: LatLng(sLat, sLng));
       var cameraUpdate = CameraUpdate.newLatLngBounds(bounds, 5.0);
-      controller.animateCamera(cameraUpdate);
+      controller.moveCamera(cameraUpdate);
     } else {
       controller.animateCamera(
           CameraUpdate.newLatLng(_markers.values.elementAt(0).position));
@@ -148,6 +157,8 @@ class _HomePageState extends State<HomePage> {
               from!.latitude, from.longitude, to!.latitude, to.longitude)
           .then((vl) {
         TripInfoRes infoRes = vl;
+
+        _tripDistance = infoRes.distance;
         setState(() {});
         List<StepsRes> rs = infoRes.steps;
         List<LatLng> paths = [];

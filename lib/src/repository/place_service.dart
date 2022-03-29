@@ -17,6 +17,7 @@ class PlaceService {
 
     var res = await http.get(Uri.parse(proxyurl + url));
     if (res.statusCode == 200) {
+      print(res.body);
       return PlaceItemRes.fromJson(json.decode(res.body));
     } else {
       return [];
